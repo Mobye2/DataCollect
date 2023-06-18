@@ -1,0 +1,7 @@
+token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRlIjoiMjAyMy0wMy0yMCAxNTozNTowMCIsInVzZXJfaWQiOiJtb3V0aGJvbWIiLCJpcCI6IjIyMC4xMzIuODYuODEifQ.uFyOi1tCHEkYae4iH3WrO8xkkgEJcpSXzcJQ9Z8Ez6s'
+STAlert = '/STAlert_by_Find'
+price_dir = '/price_record/'
+margin_dir = '/margin_record/'
+investors_dir = '/investors_record/'
+chip_dir = '/chips_record/'
+revenue_dir = '/revenue_record/'
