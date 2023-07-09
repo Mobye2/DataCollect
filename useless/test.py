@@ -1,4 +1,4 @@
-
+import update_dailyuseless
 
 list = []
 for i in range(-5, 0):

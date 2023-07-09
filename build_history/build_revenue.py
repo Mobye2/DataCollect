@@ -2,7 +2,7 @@ from FinMind.data import DataLoader
 import pandas as pd
 import os
 from function.indicators_test import increase_indicators
-import file_dir 
+import function.file_dir as file_dir
 import datetime
 
 
