@@ -4,7 +4,7 @@ import numpy as np
 import datetime
 import os
 from function.indicators_test import increase_indicators
-import file_dir
+import function.file_dir as file_dir
 
 
 def update_price(date):
@@ -43,7 +43,7 @@ def update_price(date):
         price_data = increase_indicators(price_data)
         price_data.to_csv(os.getcwd()+file_dir.price_dir+file_name[0], encoding='utf-8-sig', index=None)
 
-
+'''
 def update_chip_twse(todate):
 
     # 取得融資資料
@@ -103,10 +103,10 @@ def update_chip_twse(todate):
         except Exception as e:
             print(f"发生错误：{e}")
             continue
-
+'''
 
 if __name__ == '__main__':
     todate = datetime.datetime.now()-datetime.timedelta(days=1)  # 2022-12-20
-    print(todate.strftime("%Y%m%d"))
+    print(todate.strftime("%Y/%m/%d"))
     update_price(todate)
     # update_chip_twse(todate)

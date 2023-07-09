@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-import file_dir 
+from . import file_dir 
 from talib import abstract
 import talib
 import matplotlib.pyplot as plt
@@ -33,9 +33,9 @@ def increase_indicators(df: pd.DataFrame):
 
 
 def main():
-    df = pd.read_csv(os.getcwd()+file_dir.price_dir+'2330_台積電.csv')
+    df = pd.read_csv(os.getcwd()+file_dir.price_dir+'1301_台塑.csv')
     df = increase_indicators(df)
-    df.to_csv(os.getcwd()+file_dir.price_dir+'2330_台積電.csv', encoding='utf-8-sig', index=None)
+    df.to_csv(os.getcwd()+file_dir.price_dir+'1301_台塑.csv', encoding='utf-8-sig', index=None)
 
 
 if __name__ == '__main__':

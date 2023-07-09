@@ -2,7 +2,7 @@ from FinMind.data import DataLoader
 import pandas as pd
 import os
 import time
-import file_dir
+import function.file_dir as file_dir
 from function.inves_data_trans import investor_data_transformer
 import datetime
 
