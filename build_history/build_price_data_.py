@@ -1,8 +1,8 @@
 from FinMind.data import DataLoader
 import pandas as pd
 import os
-from function.indicators import increase_indicators
-import para
+from function.indicators_test import increase_indicators
+import file_dir 
 import datetime
 
 
@@ -21,9 +21,8 @@ def build_price_data(target_stocks_list_name, start_date, end_date):
             continue
         # print(data)
         data = increase_indicators(data)
-
         filename = stock_id+'_'+stock_name + '.csv'
-        data.to_csv(os.getcwd()+'/price_record/'+filename,
+        data.to_csv(os.getcwd()+file_dir.price_dir+filename,
                     encoding='utf-8-sig', index=False)
         print('build_price_data finished')
 
@@ -37,7 +36,7 @@ if __name__ == '__main__':
     build_price_data(target_stocks_list_name, start_date, end_date)
 
     # 建立檔名列表
-    stock_file_list = pd.DataFrame(os.listdir(os.getcwd()+para.price_dir))
+    stock_file_list = pd.DataFrame(os.listdir(os.getcwd()+file_dir.price_dir))
     filename_list = 'stock_filename_list.csv'
     stock_file_list.to_csv(filename_list, index=False,
                            encoding='utf-8-sig')

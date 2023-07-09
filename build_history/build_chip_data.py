@@ -2,7 +2,7 @@ from FinMind.data import DataLoader
 import pandas as pd
 import os
 import time
-import para
+import file_dir
 from function.inves_data_trans import investor_data_transformer
 import datetime
 
@@ -29,7 +29,7 @@ def build_margin_data(file_list_name, start_date, end_date):
             filename = stock_id+'_'+stock_name + '.csv'
             # print(margin_data, investor_data)
             chips_data = margin_data.merge(investor_data, on=['date', 'stock_id'])
-            chips_data.to_csv(os.getcwd()+para.chip_dir + filename,
+            chips_data.to_csv(os.getcwd()+file_dir.chip_dir + filename,
                               encoding='utf-8-sig', index=None)
             print(stock_id, stock_name, 'chips_data merge finished')
         except Exception as e:

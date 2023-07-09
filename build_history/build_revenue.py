@@ -1,8 +1,8 @@
 from FinMind.data import DataLoader
 import pandas as pd
 import os
-from function.indicators import increase_indicators
-import para
+from function.indicators_test import increase_indicators
+import file_dir 
 import datetime
 
 
@@ -24,15 +24,19 @@ def build_revenue_data(target_stocks_list_name, start_date, end_date):
         # print(data)
 
         filename = stock_id+'_'+stock_name + '.csv'
-        data.to_csv(os.getcwd()+'/revenue_record/'+filename,
+        data.to_csv(os.getcwd()+file_dir.revenue_dir+filename,
                     encoding='utf-8-sig', index=False)
         print('build_revenue_data finished')
 
 
-if __name__ == '__main__':
-
+def main():
     target_stocks_list_name = 'tracing_stock_list.csv'
     lost_stock_list_name = 'lost_stock_list.csv'
     start_date = '2015-01-01'
     end_date = datetime.datetime.now().strftime('%Y-%m-%d')
     build_revenue_data(target_stocks_list_name, start_date, end_date)
+
+
+if __name__ == '__main__':
+    main()
+
