@@ -1,0 +1,30 @@
+# 忽略編譯產物和暫存檔
+*.pyc
+__pycache__/
+
+# 忽略環境和依賴庫
+.env
+venv/
+env/
+
+# 忽略IDE/編輯器相關檔案
+.idea/
+.vscode/
+
+# 忽略記錄檔和臨時檔案
+*.log
+*.swp
+*.swo
+
+# 忽略敏感資訊（例如API金鑰等）
+secrets.yaml
+
+# 忽略編譯輸出和建構目錄
+Data/
+dist/
+
+# 忽略自動產生的檔案
+MANIFEST
+
+# 忽略專案文檔
+/docs/_build/

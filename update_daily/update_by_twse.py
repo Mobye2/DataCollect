@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 import datetime
 import os
-from indicators import increase_indicators
-import para
+from function.indicators_test import increase_indicators
+import file_dir
 
 
 def update_price(date):
@@ -22,7 +22,7 @@ def update_price(date):
     listed_stock_data = listed_stock_data.rename(columns={'證券代號': 'stock_id', '證券名稱': 'stock_name', '成交股數': 'Trading_Volume', '成交金額': 'Trading_money',
                                                           '開盤價': 'open', '最高價': 'high', '最低價': 'low', '收盤價': 'close', '漲跌價差': 'spread', '成交筆數': 'transactions'})
     new_data = pd.concat([OTC_data, listed_stock_data], axis=0, join='inner')
-    new_data.to_csv('test/price_data.csv', encoding='utf-8-sig', index=False)
+    #new_data.to_csv('price_data.csv', encoding='utf-8-sig', index=False)
 
     stock_list = pd.read_csv(os.getcwd()+'/stock_filename_list.csv', encoding='utf-8-sig', dtype={'stock_id': str})
     for index, file_name in stock_list.iterrows():
@@ -34,14 +34,14 @@ def update_price(date):
             continue
         keptdata = keptdata.assign(date=date.date())
         # 將各股今日交易結果聯集到歷史資料
-        history_data = pd.read_csv(os.getcwd()+para.price_dir+file_name[0], thousands=',', dtype={'stock_id': str})
+        history_data = pd.read_csv(os.getcwd()+file_dir.price_dir+file_name[0], thousands=',', dtype={'stock_id': str})
         # 如果資料重複,continue
         if history_data.at[history_data.index[-1], 'Trading_Volume'] == keptdata.loc[keptdata.index[-1], 'Trading_Volume'] and history_data.at[history_data.index[-1], 'Trading_money'] == keptdata.loc[keptdata.index[-1], 'Trading_money']:
             print('repeat')
             continue
         price_data = pd.concat([history_data, keptdata], ignore_index=True, join='inner')
         price_data = increase_indicators(price_data)
-        price_data.to_csv(os.getcwd()+para.price_dir+file_name[0], encoding='utf-8-sig', index=None)
+        price_data.to_csv(os.getcwd()+file_dir.price_dir+file_name[0], encoding='utf-8-sig', index=None)
 
 
 def update_chip_twse(todate):
@@ -99,7 +99,7 @@ def update_chip_twse(todate):
                 print('repeat')
                 continue
             chips_kept = pd.concat([history_data, chips_kept], ignore_index=True, join='outer')
-            chips_kept.to_csv(os.getcwd()+'/test/'+file_name[0], encoding='utf-8-sig', index=None)
+            chips_kept.to_csv(os.getcwd()+file_dir.chip_dir+file_name[0], encoding='utf-8-sig', index=None)
         except Exception as e:
             print(f"发生错误：{e}")
             continue
