@@ -1,6 +1,8 @@
 import requests
 import pandas as pd
 
+def tsf():
+    print ('tsf is called')
 
 def history_price_api(stock_id, start_date, end_date):
     # 請將 YOUR_API_KEY 替換為您的FinMind API金鑰

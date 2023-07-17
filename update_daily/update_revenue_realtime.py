@@ -64,7 +64,7 @@ def concat_byname(new_revenue: pd.DataFrame,today):
             continue
         revenue_data = pd.concat([history_data, keptdata], ignore_index=True, join='inner')
         revenue_data.to_csv(os.getcwd()+file_dir.revenue_dir+file_name[0], encoding='utf-8-sig', index=None)
-        return revenue_data
+    
 
 if __name__ == "__main__":
     # 民國100年1月
