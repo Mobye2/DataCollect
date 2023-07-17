@@ -8,18 +8,18 @@ import datetime
 
 def build_price_data(target_stocks_list_name, start_date, end_date):
 
-    # 股票清單
+    # 追蹤股票清單
     stock_id_list = pd.read_csv(
         os.getcwd()+'/'+target_stocks_list_name, dtype={'stock_id': str}, index_col=False)
-    # 逐一去撈，並存為EXCEL
+    # 依清單逐一去撈，並存為EXCEL
     for index, d in stock_id_list.iterrows():
         stock_id = d['stock_id']
         stock_name = d['stock_name']
         print(stock_id, stock_name)
+        #用FINMIND API去CALL資料
         data = DataLoader().taiwan_stock_daily(stock_id, start_date, end_date)
         if data.empty == True:
             continue
-        # print(data)
         data = increase_indicators(data)
         filename = stock_id+'_'+stock_name + '.csv'
         data.to_csv(os.getcwd()+file_dir.price_dir+filename,
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     end_date = datetime.datetime.now().strftime('%Y-%m-%d')
     build_price_data(target_stocks_list_name, start_date, end_date)
 
-    # 建立檔名列表
+    # 建立歷史資料檔名列表
     stock_file_list = pd.DataFrame(os.listdir(os.getcwd()+file_dir.price_dir))
     filename_list = 'stock_filename_list.csv'
     stock_file_list.to_csv(filename_list, index=False,
