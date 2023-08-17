@@ -5,7 +5,7 @@ from function.indicators_test import increase_indicators
 import function.file_dir as file_dir
 import datetime
 
-
+s
 def build_revenue_data(target_stocks_list_name, start_date, end_date):
 
     # 股票清單

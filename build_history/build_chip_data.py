@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import time
 import function.file_dir as file_dir
+import function.calculate_investor_cost as calculate_investor_cost
 from function.inves_data_trans import investor_data_transformer
 import datetime
 
@@ -29,9 +30,12 @@ def build_margin_data(file_list_name, start_date, end_date):
             filename = stock_id+'_'+stock_name + '.csv'
             # print(margin_data, investor_data)
             chips_data = margin_data.merge(investor_data, on=['date', 'stock_id'])
+            print ('original chips data finished')
+            #chips_data=calculate_investor_cost.calculate_cost(chips_data)
             chips_data.to_csv(os.getcwd()+file_dir.chip_dir + filename,
                               encoding='utf-8-sig', index=None)
             print(stock_id, stock_name, 'chips_data merge finished')
+
         except Exception as e:
             print('error happen,reason:', e)
             continue
