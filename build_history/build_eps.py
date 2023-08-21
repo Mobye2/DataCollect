@@ -3,7 +3,6 @@ import os
 import function.file_dir as file_dir
 import pandas as pd
 
-def calculate_eps(stock_id,stock_name,start_date):
 
 def import_eps(stock_id, stock_name, start_date):
     api = DataLoader()
