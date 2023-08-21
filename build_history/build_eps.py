@@ -5,6 +5,7 @@ import pandas as pd
 
 def calculate_eps(stock_id,stock_name,start_date):
 
+def import_eps(stock_id, stock_name, start_date):
     api = DataLoader()
     # api.login_by_token(api_token='token')
     # api.login(user_id='user_id',password='password')
