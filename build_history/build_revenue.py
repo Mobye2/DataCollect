@@ -5,7 +5,15 @@ from function.indicators_test import increase_indicators
 import function.file_dir as file_dir
 import datetime
 
-s
+def cumulative_revenue_growth(df):
+    df['date'] = pd.to_datetime(df['date'])
+    # 根据'year'和'month'分组，计算每个月份的总收入
+    df['cumulative_revenue'] = df.rolling(12)['revenue'].sum()
+    # 计算每个月份的累积增长百分比（相对于去年同月的累积收入）
+    df['cumulative_growth_percentage'] = ((df['cumulative_revenue'] - df['cumulative_revenue'].shift(12)) / df['cumulative_revenue'].shift(12)) 
+
+    return df
+
 def build_revenue_data(target_stocks_list_name, start_date, end_date):
 
     # 股票清單
@@ -22,11 +30,16 @@ def build_revenue_data(target_stocks_list_name, start_date, end_date):
             print('no revenue data')
             continue
         # print(data)
+        data = cumulative_revenue_growth(data)
+        print (data)
+
 
         filename = stock_id+'_'+stock_name + '.csv'
         data.to_csv(os.getcwd()+file_dir.revenue_dir+filename,
                     encoding='utf-8-sig', index=False)
         print('build_revenue_data finished')
+
+
 
 
 def main():
