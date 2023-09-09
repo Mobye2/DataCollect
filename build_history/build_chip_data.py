@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import time
 import function.file_dir as file_dir
-import function.calculate_investor_cost as calculate_investor_cost
+#import function.calculate_investor_cost as calculate_investor_cost
 from function.inves_data_trans import investor_data_transformer
 import datetime
 

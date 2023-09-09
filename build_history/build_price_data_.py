@@ -29,11 +29,11 @@ def build_price_data(target_stocks_list_name, start_date, end_date):
 
 if __name__ == '__main__':
 
-    target_stocks_list_name = 'tracing_stock_list.csv'
-    # lost_stock_list_name = 'lost_stock_list.csv'
+    #target_stocks_list_name = 'tracing_stock_list.csv'
+    stock_filemame_list = 'stock_filename_list.csv'
     start_date = '2015-01-01'
     end_date = datetime.datetime.now().strftime('%Y-%m-%d')
-    build_price_data(target_stocks_list_name, start_date, end_date)
+    build_price_data(stock_filemame_list, start_date, end_date)
 
     # 建立歷史資料檔名列表
     stock_file_list = pd.DataFrame(os.listdir(os.getcwd()+file_dir.price_dir))

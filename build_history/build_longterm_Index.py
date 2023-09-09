@@ -50,6 +50,9 @@ def calculate_eps(stock_id, stock_name, start_date):
     revenue = pd.read_csv(os.getcwd()+file_dir.revenue_dir+stock_id+'_'+stock_name+'.csv', dtype={'stock_id': str}, index_col=False)
     revenue=revenue[['date', 'stock_id', 'cumulative_growth_percentage']]
 
+    #取得三大法人平均成本
+    chip = pd.read_csv(os.getcwd()+file_dir.chip_dir+stock_id+'_'+stock_name+".csv", dtype={'stock_id': str}, index_col=False)
+    chip=chip[['date', 'stock_id', 'average_holding_cost']]
 
     #Concat with price data 
     price_data=pd.read_csv(os.getcwd()+file_dir.price_dir+stock_id+'_'+stock_name+".csv", dtype={'stock_id': str}, index_col=False)
@@ -59,8 +62,9 @@ def calculate_eps(stock_id, stock_name, start_date):
     result_df = pd.merge(eps_data, price_data, on=['date','stock_id'],how='outer')
     result_df = pd.merge(result_df, BalnaceSheet, on=['date','stock_id'],how='outer')
     result_df = pd.merge(result_df, revenue, on=['date','stock_id'],how='outer')
-
-    result_df.sort_values(by='date', inplace=True)  # Sort the DataFrame by the 'date' column in ascending order
+    result_df = pd.merge(result_df, chip, on=['date','stock_id'],how='outer')
+    # Sort the DataFrame by the 'date' column in ascending order
+    result_df.sort_values(by='date', inplace=True)  
     # Use fillna method to fill missing 'price' data with the last row's 'price'
     result_df['Eps'].fillna(method='ffill', inplace=True)
     result_df['TotalShares'].fillna(method='ffill', inplace=True)
@@ -69,6 +73,7 @@ def calculate_eps(stock_id, stock_name, start_date):
     result_df['Earnings'].fillna(method='ffill', inplace=True)
     result_df['year_earnings'].fillna(method='ffill', inplace=True)
     result_df['cumulative_growth_percentage'].fillna(method='ffill', inplace=True)
+    result_df['AccountsPayable'].fillna(method='ffill', inplace=True)
 
     #現金流量比OCF
     result_df['OCF']=result_df['CashFlows']*4/result_df['TotalShares']
@@ -77,18 +82,17 @@ def calculate_eps(stock_id, stock_name, start_date):
     result_df['dividend_yield']=result_df['year_earnings']/result_df['close']
     result_df['dividend_yield_6y'] = result_df['dividend_yield'].rolling(window=1500, min_periods=1).mean()
 
-
-
-
+    
 
     #drop the row with empty price
     result_df['empty_price'] = result_df['close'].isnull()
     result_df=result_df[result_df['empty_price']==False]
+    result_df.drop(['empty_price'], axis=1, inplace=True)
     #print (result_df)
     return result_df
 
 if __name__ == '__main__':
-    start_date='2019-01-01'
+    start_date='2015-01-01'
 
     file_list_name = 'tracing_stock_list.csv'
     stock_id_list = pd.read_csv(os.getcwd()+'/'+file_list_name, dtype={'stock_id': str}, index_col=False)
