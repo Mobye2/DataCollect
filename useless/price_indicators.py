@@ -1,12 +1,11 @@
 import pandas as pd
 import os
-from . import file_dir 
+from ..build_history.function_pack import file_dir 
 from talib import abstract
-import talib
-import matplotlib.pyplot as plt
+from FinMind.data import DataLoader
 
 
-def increase_indicators(df: pd.DataFrame):
+def price_indicators(df: pd.DataFrame):
     df = df.rename(columns={'max': 'high', 'min': 'low'})
     # KD
     df = pd.concat([df, abstract.STOCH(df, fastk_period=9, slowk_period=3, slowd_period=3)], axis=1)
@@ -34,7 +33,7 @@ def increase_indicators(df: pd.DataFrame):
 
 def main():
     df = pd.read_csv(os.getcwd()+file_dir.price_dir+'1301_台塑.csv')
-    df = increase_indicators(df)
+    df = price_indicators(df)
     df.to_csv(os.getcwd()+file_dir.price_dir+'1301_台塑.csv', encoding='utf-8-sig', index=None)
 
 

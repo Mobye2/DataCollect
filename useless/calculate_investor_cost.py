@@ -1,19 +1,16 @@
 import pandas as pd
+import function.file_dir as file_dir
 import os
-
-
 #Generate a function calculate  the cost of investors
-def calculate_cost(stock_name):
+def calculate_investor_cost(stock_filename,chips_data):
     # import the data from the file
-    
-    chip = pd.read_csv(os.getcwd()+file_dir.chip_dir+stock_name)
-    price=pd.read_csv(os.getcwd()+file_dir.price_dir+stock_name)
+    price=pd.read_csv(os.getcwd()+file_dir.price_dir+stock_filename, dtype={'stock_id': str}, index_col=False)
+    price=price[['date', 'stock_id', 'close']]
     #merge the data
-    df = pd.merge(chip,price,how='left',on=['date','stock_id'])
-    print (df)
+    chips_price_df = pd.merge(chips_data,price,how='left',on=['date','stock_id'])
 
     # Calculate the net volume for each day
-    df['net_volume'] = df['Investment_Trust_Buy'] - df['Investment_Trust_Sell'] +df['Foreign_Investor_Buy']-df['Foreign_Investor_Sell']+df['Dealer_Self_Buy']-df['Dealer_Self_Sell']
+    chips_price_df['net_volume'] = chips_price_df['Investment_Trust_Buy'] - chips_price_df['Investment_Trust_Sell'] +chips_price_df['Foreign_Investor_Buy']-chips_price_df['Foreign_Investor_Sell']+chips_price_df['Dealer_Self_Buy']-chips_price_df['Dealer_Self_Sell']
     # Initialize a list to store the calculated cumulative costs
     cumulative_costs = []
     cumulative_net_volumes = []
@@ -22,7 +19,7 @@ def calculate_cost(stock_name):
     cumulative_cost = 0
     cumulative_net_volume=0
     last_average_holding_cost=0
-    for index, row in df.iterrows():
+    for index, row in chips_price_df.iterrows():
         #calculate cumulative net volume
         cumulative_net_volume+=row['net_volume']
         cumulative_net_volume=max(cumulative_net_volume, 0)
@@ -44,14 +41,28 @@ def calculate_cost(stock_name):
         
 
     # Add the calculated cumulative costs to the DataFrame
-    df['cumulative_cost'] = cumulative_costs
-    df['cumulative_net_volume']=cumulative_net_volumes
-    df['average_holding_cost']=average_holding_costs
+    chips_price_df['cumulative_cost'] = cumulative_costs
+    chips_price_df['cumulative_net_volume']=cumulative_net_volumes
+    chips_price_df['average_holding_cost']=average_holding_costs
 
     # Calculate the average holding cost for each day
     #df['average_holding_cost'] = df['cumulative_cost'] / df['cumulative_net_volume']
 
     #make average holding cost *(-1) if cumulative net volume <0
-    df.loc[df['cumulative_net_volume'] < 0, 'average_holding_cost'] = df['average_holding_cost'] * (-1)
+    chips_price_df.loc[chips_price_df['cumulative_net_volume'] < 0, 'average_holding_cost'] = chips_price_df['average_holding_cost'] * (-1)
     # Save the DataFrame to a CSV file
-    return df
+    average_holding_costs=chips_price_df['average_holding_cost']
+    return average_holding_costs
+    
+
+
+
+# if __name__ == '__main__':
+    # file_list_name = 'tracing_stock_list.csv'
+    # stock_id_list = pd.read_csv(os.getcwd()+'/'+file_list_name, dtype={'stock_id': str}, index_col=False)
+    # for index, d in stock_id_list.iterrows():
+    #     stock_id = d['stock_id']
+    #     stock_name = d['stock_name']
+    #     print(stock_id, stock_name)
+    #     #chips_price_data=calculate_cost(stock_id+'_'+stock_name+'.csv')
+        #chips_price_data.to_csv(os.getcwd()+file_dir.test_dir+stock_id+'_'+stock_name+'.csv', index=False)
