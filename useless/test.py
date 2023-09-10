@@ -10,7 +10,7 @@ df2 = pd.DataFrame(data2)
 df3 = pd.DataFrame(data3)
 
 # 合并多个数据框
-combined_df = pd.concat([df1, df2, df3], ignore_index=True)
+combined_df = pd.concat([df1, df2, df3], on=['B'],ignore_index=True)
 
 # 现在，combined_df 包含了 df1、df2 和 df3 的合并数据
 print(combined_df)

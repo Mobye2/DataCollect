@@ -2,9 +2,9 @@ from FinMind.data import DataLoader
 import pandas as pd
 import os
 import time
-import function.file_dir as file_dir
+from function_pack import file_dir
 import datetime
-from function import api_upper_limit_error
+from function_pack.api_limit_error import api_upper_limit_error
 
 def investor_data_transformer(data: pd.DataFrame):
     new = {

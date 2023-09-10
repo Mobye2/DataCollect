@@ -59,15 +59,15 @@ def calculate_eps(stock_id, stock_name, start_date):
 
     #Concat with price data 
     price_data=pd.read_csv(os.getcwd()+file_dir.price_dir+stock_id+'_'+stock_name+".csv", dtype={'stock_id': str}, index_col=False)
-    result_df = pd.merge([price_data,PBR_data,CashFlow,Stockdivid,eps_data,BalanceSheet,revenue,chip] on=['date','stock_id'],how='outer')
-    # price_data=pd.merge(price_data,PBR_data,on=['date','stock_id'],how='outer')
-    # price_data=pd.merge(price_data,CashFlow,on=['date','stock_id'],how='outer')
-    # price_data=pd.merge(price_data,Stockdivid,on=['date','stock_id'],how='outer')
-    # result_df = pd.merge(eps_data, price_data, on=['date','stock_id'],how='outer')
-    # result_df = pd.merge(result_df, BalanceSheet, on=['date','stock_id'],how='outer')
-    # result_df = pd.merge(result_df, revenue, on=['date','stock_id'],how='outer')
-    # result_df = pd.merge(result_df, chip, on=['date','stock_id'],how='outer')
-    
+    #result_df = pd.merge([price_data,PBR_data,CashFlow,Stockdivid,eps_data,BalanceSheet,revenue,chip], on=['date','stock_id'],how='outer')
+    price_data=pd.merge(price_data,PBR_data,on=['date','stock_id'],how='outer')
+    price_data=pd.merge(price_data,CashFlow,on=['date','stock_id'],how='outer')
+    price_data=pd.merge(price_data,Stockdivid,on=['date','stock_id'],how='outer')
+    result_df = pd.merge(eps_data, price_data, on=['date','stock_id'],how='outer')
+    result_df = pd.merge(result_df, BalanceSheet, on=['date','stock_id'],how='outer')
+    result_df = pd.merge(result_df, revenue, on=['date','stock_id'],how='outer')
+    result_df = pd.merge(result_df, chip, on=['date','stock_id'],how='outer')
+
     # Sort the DataFrame by the 'date' column in ascending order
     result_df.sort_values(by='date', inplace=True)  
     # Use fillna method to fill missing 'price' data with the last row's 'price'
