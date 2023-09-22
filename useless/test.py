@@ -1,16 +1,32 @@
 import pandas as pd
+import os
 
-# 假设有三个数据框 df1、df2 和 df3
-data1 = {'A': [1, 2, 3], 'B': [4, 5, 6]}
-data2 = {'B': [4, 5, 6], 'D': [10, 11, 12]}
-data3 = {'B': [4, 5, 6], 'E': [16, 17, 18]}
+def fixColumn(target_stocks_list_name):
 
-df1 = pd.DataFrame(data1)
-df2 = pd.DataFrame(data2)
-df3 = pd.DataFrame(data3)
+    # 追蹤股票清單, 檔名拆為id & name
+    stock_id_list = pd.read_csv(os.getcwd()+'/'+target_stocks_list_name, index_col=False)
+    stock_id_list[['stock_id','stock_name']] = stock_id_list['file_name'].str.split('_',expand=True)
+    stock_id_list[['stock_name','extension']] = stock_id_list['stock_name'].str.split('.',expand=True)
+    # 依清單逐一去撈，並存為EXCEL
+    for index, filename in stock_id_list.iterrows():
+        
+        stock_id = filename['stock_id']
+        stock_name = filename['stock_name']
+        print(stock_id, stock_name)
+        try:
+            price_data=pd.read_csv(os.getcwd()+'/Data/eps_record/'+stock_id+'_'+stock_name+".csv", dtype={'stock_id': str}, index_col=False)
+        except:
+            continue
+        
+        price_data = price_data.rename(columns={'high': 'High', 'low': 'Low'})
+        price_data = price_data.rename(columns={'open': 'Open', 'close': 'Close', 'volume': 'Volume','Trading_volume': 'Volume','5MA': 'five_MA','10MA': 'ten_MA','20MA': 'twenty_MA'})
+        #存檔
+        price_data.to_csv(os.getcwd()+'/Data/eps_record/'+filename['file_name'],
+                    encoding='utf-8-sig', index=False)
 
-# 合并多个数据框
-combined_df = pd.concat([df1, df2, df3], on=['B'],ignore_index=True)
 
-# 现在，combined_df 包含了 df1、df2 和 df3 的合并数据
-print(combined_df)
+if __name__ == '__main__':
+
+    #target_stocks_list_name = 'tracing_stock_list.csv'
+    stock_filemame_list = 'stock_filename_list.csv'
+    fixColumn(stock_filemame_list)

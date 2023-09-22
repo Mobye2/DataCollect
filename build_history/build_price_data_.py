@@ -9,15 +9,16 @@ from function_pack.build_list import build_list
 
 def price_indicators(df: pd.DataFrame):
     df = df.rename(columns={'max': 'high', 'min': 'low'})
+    # df = df.rename(columns={'open': 'Open', 'close': 'Close', 'volume': 'Volume','Trading_volume': 'Volume'})
     # KD
     df = pd.concat([df, abstract.STOCH(df, fastk_period=9, slowk_period=3, slowd_period=3)], axis=1)
     # MA
     df = pd.concat([df, abstract.SMA(df, 5)], axis=1)
-    df = df.rename(columns={0: '5MA'})
+    df = df.rename(columns={0: 'five_MA'})
     df = pd.concat([df, abstract.SMA(df, 10)], axis=1)
-    df = df.rename(columns={0: '10MA'})
+    df = df.rename(columns={0: 'ten_MA'})
     df = pd.concat([df, abstract.SMA(df, 20)], axis=1)
-    df = df.rename(columns={0: '20MA'})
+    df = df.rename(columns={0: 'twenty_MA'})
     # RSI
     df = pd.concat([df, abstract.RSI(df, 14)], axis=1)
     df = df.rename(columns={0: 'RSI'})
@@ -29,6 +30,9 @@ def price_indicators(df: pd.DataFrame):
     df = df.rename(columns={0: 'BBANDS'})
     df = df.loc[:, ~df.columns.duplicated(keep='last')]
     # print(df)
+    df = df.rename(columns={'high': 'High', 'low': 'Low'})
+    df = df.rename(columns={'open': 'Open', 'close': 'Close', 'volume': 'Volume','Trading_volume': 'Volume'})
+
 
     return df
 
